@@ -29,9 +29,9 @@ const Keypad: React.FC<KeypadProps> = ({ isOpen, onClose, onSubmit, onUndo, canU
         onClick={onClose} 
       />
       
-      {/* Side Panel - Further Downsized */}
+      {/* Side Panel - Increased width from w-32 to w-48 (50% increase) */}
       <div 
-        className={`fixed top-16 right-0 z-50 h-fit w-32 bg-zinc-900 border-l border-b border-zinc-800 flex flex-col transition-transform duration-300 transform rounded-none shadow-2xl ${
+        className={`fixed top-16 right-0 z-50 h-fit w-48 bg-zinc-900 border-l border-b border-zinc-800 flex flex-col transition-transform duration-300 transform rounded-none shadow-2xl ${
           isOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
@@ -43,7 +43,7 @@ const Keypad: React.FC<KeypadProps> = ({ isOpen, onClose, onSubmit, onUndo, canU
         </div>
 
         <div className="p-2 flex flex-col space-y-2">
-          {/* Winner Selection - Square Buttons */}
+          {/* Winner Selection - Increased Width via panel container */}
           <div className="grid grid-cols-2 gap-1.5">
             <button
               onClick={() => setSelectedWinner(Winner.PLAYER)}
@@ -67,7 +67,7 @@ const Keypad: React.FC<KeypadProps> = ({ isOpen, onClose, onSubmit, onUndo, canU
             </button>
           </div>
 
-          {/* YES/NO Buttons - Square Buttons */}
+          {/* YES/NO Buttons */}
           <div className="grid grid-cols-2 gap-1.5">
             <button
               onClick={() => handleSubmit(true)}
