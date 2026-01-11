@@ -102,8 +102,6 @@ function initChart() {
                         display: true,
                         drawTicks: false,
                         color: (context) => {
-                            // Non-invasive colors
-                            // Zero line is #3f3f46, others are #141417
                             if (context.tick && context.tick.value === 0) return '#3f3f46';
                             return '#141417'; 
                         }
@@ -218,7 +216,6 @@ function closeResetModal() {
 
 // --- Rendering ---
 function render() {
-    // Keypad Visibility
     if (state.isKeypadOpen) {
         elements.keypadPanel.classList.remove('translate-x-full');
         elements.keypadPanel.classList.add('translate-x-0');
@@ -231,35 +228,29 @@ function render() {
         elements.keypadBackdrop.classList.remove('opacity-100');
     }
 
-    // Winner Selection styles
     elements.btnPlayer.className = getButtonClass(state.selectedWinner === Winner.PLAYER, 'blue');
     elements.btnBanker.className = getButtonClass(state.selectedWinner === Winner.BANKER, 'red');
 
-    // Yes/No buttons state
     const isWinnerSelected = !!state.selectedWinner;
     elements.btnYes.disabled = !isWinnerSelected;
     elements.btnNo.disabled = !isWinnerSelected;
-    elements.btnYes.className = `h-14 flex items-center justify-center transition-all rounded-none uppercase text-[10px] font-black tracking-widest ${isWinnerSelected ? 'bg-emerald-600 hover:bg-emerald-500 text-white' : 'bg-zinc-800 text-zinc-600 cursor-not-allowed border border-zinc-700'}`;
-    elements.btnNo.className = `h-14 flex items-center justify-center transition-all rounded-none uppercase text-[10px] font-black tracking-widest ${isWinnerSelected ? 'bg-zinc-700 hover:bg-zinc-600 text-white' : 'bg-zinc-800 text-zinc-600 cursor-not-allowed border border-zinc-700'}`;
+    elements.btnYes.className = `h-16 flex items-center justify-center transition-all rounded-none uppercase text-xs font-black tracking-widest ${isWinnerSelected ? 'bg-emerald-600 hover:bg-emerald-500 text-white' : 'bg-zinc-800 text-zinc-600 cursor-not-allowed border border-zinc-700'}`;
+    elements.btnNo.className = `h-16 flex items-center justify-center transition-all rounded-none uppercase text-xs font-black tracking-widest ${isWinnerSelected ? 'bg-zinc-700 hover:bg-zinc-600 text-white' : 'bg-zinc-800 text-zinc-600 cursor-not-allowed border border-zinc-700'}`;
 
-    // Undo button state
     elements.btnUndo.disabled = state.hands.length === 0;
-    elements.btnUndo.className = `w-full h-8 flex items-center justify-center space-x-1 text-[9px] font-bold transition-colors rounded-none uppercase tracking-widest ${state.hands.length > 0 ? 'bg-zinc-800 text-zinc-400 hover:text-white hover:bg-zinc-700' : 'text-zinc-700 cursor-not-allowed border border-zinc-800'}`;
+    elements.btnUndo.className = `w-full h-12 flex items-center justify-center space-x-2 text-[10px] font-bold transition-colors rounded-none uppercase tracking-widest mt-16 ${state.hands.length > 0 ? 'bg-zinc-800 text-zinc-400 hover:text-white hover:bg-zinc-700' : 'text-zinc-700 cursor-not-allowed border border-zinc-800'}`;
 
-    // Next Suggestion Indicator
     updatePredictionIndicator();
 
-    // History List
     elements.historyContainer.className = `flex-none bg-zinc-900 border-t border-zinc-800 flex flex-col transition-all duration-300 ease-in-out z-20 rounded-none ${state.isHistoryExpanded ? 'h-[60vh]' : 'h-20'}`;
     elements.logCount.textContent = `[${state.hands.length}]`;
     renderHistoryList();
 
-    // Chart Update
     updateChart();
 }
 
 function getButtonClass(isSelected, color) {
-    const base = "h-14 flex items-center justify-center border-2 transition-all rounded-none uppercase text-[10px] font-black tracking-tighter ";
+    const base = "h-16 flex items-center justify-center border-2 transition-all rounded-none uppercase text-sm font-black tracking-widest ";
     if (isSelected) {
         return base + (color === 'blue' ? 'bg-blue-600 border-blue-400 text-white' : 'bg-red-600 border-red-400 text-white');
     }

@@ -79,32 +79,32 @@
         </div>
     </main>
 
-    <!-- Keypad Side Panel - Increased width from w-32 to w-48 -->
-    <div id="keypad-backdrop" class="fixed inset-0 z-40 bg-black/20 transition-opacity duration-300 opacity-0 pointer-events-none"></div>
-    <div id="keypad-panel" class="fixed top-16 right-0 z-50 w-48 h-fit bg-zinc-900 border-l border-b border-zinc-800 flex flex-col transition-transform translate-x-full rounded-none shadow-2xl">
-        <div class="flex justify-end items-center px-2 py-1 border-b border-zinc-800 bg-zinc-950">
+    <!-- Keypad Side Panel - Moved to top-0 and Widened to w-64 -->
+    <div id="keypad-backdrop" class="fixed inset-0 z-40 bg-black/30 transition-opacity duration-300 opacity-0 pointer-events-none"></div>
+    <div id="keypad-panel" class="fixed top-0 right-0 z-50 w-64 h-fit bg-zinc-900 border-l border-b border-zinc-800 flex flex-col transition-transform translate-x-full rounded-none shadow-2xl">
+        <div class="flex justify-end items-center px-3 py-2 border-b border-zinc-800 bg-zinc-950">
             <button id="btn-close-keypad" class="p-1 hover:bg-zinc-800 transition-colors text-zinc-500 hover:text-white">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
             </button>
         </div>
 
-        <div class="p-2 flex flex-col space-y-2">
+        <div class="p-4 flex flex-col space-y-3">
             <!-- Winner Buttons -->
-            <div class="grid grid-cols-2 gap-1.5">
-                <button id="btn-player" class="h-14 flex items-center justify-center border-2 bg-zinc-950 border-zinc-800 text-zinc-500 hover:border-zinc-700 hover:bg-zinc-800 transition-all rounded-none uppercase text-[10px] font-black tracking-tighter">P</button>
-                <button id="btn-banker" class="h-14 flex items-center justify-center border-2 bg-zinc-950 border-zinc-800 text-zinc-500 hover:border-zinc-700 hover:bg-zinc-800 transition-all rounded-none uppercase text-[10px] font-black tracking-tighter">B</button>
+            <div class="grid grid-cols-2 gap-2">
+                <button id="btn-player" class="h-16 flex items-center justify-center border-2 bg-zinc-950 border-zinc-800 text-zinc-500 hover:border-zinc-700 hover:bg-zinc-800 transition-all rounded-none uppercase text-sm font-black tracking-widest">PLAYER</button>
+                <button id="btn-banker" class="h-16 flex items-center justify-center border-2 bg-zinc-950 border-zinc-800 text-zinc-500 hover:border-zinc-700 hover:bg-zinc-800 transition-all rounded-none uppercase text-sm font-black tracking-widest">BANKER</button>
             </div>
 
             <!-- YES/NO Buttons -->
-            <div class="grid grid-cols-2 gap-1.5">
-                <button id="btn-yes" disabled class="h-14 flex items-center justify-center transition-all rounded-none uppercase bg-zinc-800 text-zinc-600 cursor-not-allowed border border-zinc-700 text-[10px] font-black tracking-widest">YES</button>
-                <button id="btn-no" disabled class="h-14 flex items-center justify-center transition-all rounded-none uppercase bg-zinc-800 text-zinc-600 cursor-not-allowed border border-zinc-700 text-[10px] font-black tracking-widest">NO</button>
+            <div class="grid grid-cols-2 gap-2">
+                <button id="btn-yes" disabled class="h-16 flex items-center justify-center transition-all rounded-none uppercase bg-zinc-800 text-zinc-600 cursor-not-allowed border border-zinc-700 text-xs font-black tracking-widest">YES</button>
+                <button id="btn-no" disabled class="h-16 flex items-center justify-center transition-all rounded-none uppercase bg-zinc-800 text-zinc-600 cursor-not-allowed border border-zinc-700 text-xs font-black tracking-widest">NO</button>
             </div>
 
-            <!-- Undo Button -->
-            <button id="btn-undo" disabled class="w-full h-8 flex items-center justify-center space-x-1 text-[9px] font-bold transition-colors rounded-none uppercase tracking-widest text-zinc-700 cursor-not-allowed border border-zinc-800">
-                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
-                <span>Undo</span>
+            <!-- Undo Button - Distanced by mt-16 -->
+            <button id="btn-undo" disabled class="w-full h-12 flex items-center justify-center space-x-2 text-[10px] font-bold transition-colors rounded-none uppercase tracking-widest mt-16 text-zinc-700 cursor-not-allowed border border-zinc-800">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+                <span>Undo Action</span>
             </button>
         </div>
     </div>
