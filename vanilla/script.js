@@ -81,11 +81,24 @@ function initChart() {
                     max: 75
                 },
                 y: {
-                    display: false,
+                    display: true, // Enabled to show grid lines
                     min: -20,
                     max: 20,
+                    border: {
+                        display: false // Hide the actual axis line
+                    },
+                    ticks: {
+                        display: false, // Hide numeric labels
+                        stepSize: 2      // Grid every 2 units
+                    },
                     grid: {
-                        color: '#18181b'
+                        display: true,
+                        drawTicks: false,
+                        color: (context) => {
+                            // Non-invasive colors
+                            // Zinc-900 equivalent for standard lines, Zinc-700 for Zero
+                            return context.tick.value === 0 ? '#3f3f46' : '#141417'; 
+                        }
                     }
                 }
             },
