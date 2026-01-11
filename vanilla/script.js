@@ -76,28 +76,36 @@ function initChart() {
             scales: {
                 x: {
                     type: 'linear',
-                    display: false,
+                    display: true,
                     min: 0,
-                    max: 75
+                    max: 75,
+                    border: { display: false },
+                    ticks: { display: false },
+                    grid: {
+                        display: true,
+                        color: '#111111',
+                        drawTicks: false
+                    }
                 },
                 y: {
-                    display: true, // Enabled to show grid lines
+                    display: true,
                     min: -20,
                     max: 20,
                     border: {
-                        display: false // Hide the actual axis line
+                        display: false
                     },
                     ticks: {
-                        display: false, // Hide numeric labels
-                        stepSize: 2      // Grid every 2 units
+                        display: false,
+                        stepSize: 2
                     },
                     grid: {
                         display: true,
                         drawTicks: false,
                         color: (context) => {
                             // Non-invasive colors
-                            // Zinc-900 equivalent for standard lines, Zinc-700 for Zero
-                            return context.tick.value === 0 ? '#3f3f46' : '#141417'; 
+                            // Zero line is #3f3f46, others are #141417
+                            if (context.tick && context.tick.value === 0) return '#3f3f46';
+                            return '#141417'; 
                         }
                     }
                 }
@@ -231,12 +239,12 @@ function render() {
     const isWinnerSelected = !!state.selectedWinner;
     elements.btnYes.disabled = !isWinnerSelected;
     elements.btnNo.disabled = !isWinnerSelected;
-    elements.btnYes.className = `h-16 flex items-center justify-center transition-all rounded-none uppercase text-sm font-black tracking-widest ${isWinnerSelected ? 'bg-emerald-600 hover:bg-emerald-500 text-white' : 'bg-zinc-800 text-zinc-600 cursor-not-allowed border border-zinc-700'}`;
-    elements.btnNo.className = `h-16 flex items-center justify-center transition-all rounded-none uppercase text-sm font-black tracking-widest ${isWinnerSelected ? 'bg-zinc-700 hover:bg-zinc-600 text-white' : 'bg-zinc-800 text-zinc-600 cursor-not-allowed border border-zinc-700'}`;
+    elements.btnYes.className = `h-14 flex items-center justify-center transition-all rounded-none uppercase text-[10px] font-black tracking-widest ${isWinnerSelected ? 'bg-emerald-600 hover:bg-emerald-500 text-white' : 'bg-zinc-800 text-zinc-600 cursor-not-allowed border border-zinc-700'}`;
+    elements.btnNo.className = `h-14 flex items-center justify-center transition-all rounded-none uppercase text-[10px] font-black tracking-widest ${isWinnerSelected ? 'bg-zinc-700 hover:bg-zinc-600 text-white' : 'bg-zinc-800 text-zinc-600 cursor-not-allowed border border-zinc-700'}`;
 
     // Undo button state
     elements.btnUndo.disabled = state.hands.length === 0;
-    elements.btnUndo.className = `w-full h-12 flex items-center justify-center space-x-2 text-xs font-bold transition-colors rounded-none uppercase tracking-widest ${state.hands.length > 0 ? 'bg-zinc-800 text-zinc-400 hover:text-white hover:bg-zinc-700' : 'text-zinc-700 cursor-not-allowed border border-zinc-800'}`;
+    elements.btnUndo.className = `w-full h-8 flex items-center justify-center space-x-1 text-[9px] font-bold transition-colors rounded-none uppercase tracking-widest ${state.hands.length > 0 ? 'bg-zinc-800 text-zinc-400 hover:text-white hover:bg-zinc-700' : 'text-zinc-700 cursor-not-allowed border border-zinc-800'}`;
 
     // Next Suggestion Indicator
     updatePredictionIndicator();
@@ -251,7 +259,7 @@ function render() {
 }
 
 function getButtonClass(isSelected, color) {
-    const base = "h-16 flex items-center justify-center border-2 transition-all rounded-none uppercase text-xs font-black tracking-widest ";
+    const base = "h-14 flex items-center justify-center border-2 transition-all rounded-none uppercase text-[10px] font-black tracking-tighter ";
     if (isSelected) {
         return base + (color === 'blue' ? 'bg-blue-600 border-blue-400 text-white' : 'bg-red-600 border-red-400 text-white');
     }
