@@ -96,7 +96,7 @@ const App: React.FC = () => {
     <div className="flex flex-col h-screen overflow-hidden bg-zinc-950 text-zinc-100 font-sans">
       <header className="flex-none h-16 bg-zinc-900 border-b border-zinc-800 flex items-center justify-between px-4 z-30 relative">
         <div className="flex items-center space-x-3">
-          <h1 className="text-sm font-bold tracking-widest text-zinc-500 uppercase hidden sm:block">3rd Card Navigator</h1>
+          <h1 className="text-sm font-bold tracking-widest text-zinc-500 uppercase hidden sm:block">Natural Win Nav</h1>
         </div>
 
         <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 flex items-center space-x-3">
@@ -133,7 +133,7 @@ const App: React.FC = () => {
             <p className="text-zinc-400 text-xs mb-6 leading-relaxed uppercase tracking-wide">
               All history and performance metrics will be purged. This action is final.
             </p>
-            <div className="flex flex-col space-y-2">
+            <div class="flex flex-col space-y-2">
               <button onClick={handleReset} className="w-full py-3 text-sm font-bold bg-rose-600 hover:bg-rose-500 text-white uppercase tracking-widest transition-colors">Purge Data</button>
               <button onClick={() => setIsResetModalOpen(false)} className="w-full py-3 text-sm font-medium text-zinc-400 hover:bg-zinc-800 border border-zinc-800 uppercase tracking-widest transition-colors">Cancel</button>
             </div>
