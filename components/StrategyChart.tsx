@@ -7,7 +7,25 @@ interface StrategyChartProps {
 }
 
 const StrategyChart: React.FC<StrategyChartProps> = ({ hands }) => {
-  const data = hands.length > 0 ? hands : [{ id: 0, runningTotal: 0 }];
+  const chartData = hands.length > 0 
+    ? hands.map((h, index) => {
+        // Calculate 5-period moving average
+        const period = 5;
+        let ma = null;
+        
+        if (index >= period - 1) {
+          const start = index - period + 1;
+          const subset = hands.slice(start, index + 1);
+          const sum = subset.reduce((acc, curr) => acc + curr.runningTotal, 0);
+          ma = sum / period;
+        }
+
+        return {
+          ...h,
+          ma5: ma
+        };
+      })
+    : [{ id: 0, runningTotal: 0, ma5: null }];
 
   // Generate grid line values for intervals of 2 from -20 to 20
   const gridLines = [];
@@ -18,7 +36,7 @@ const StrategyChart: React.FC<StrategyChartProps> = ({ hands }) => {
   return (
     <div className="w-full h-full bg-zinc-900/30 border-b border-zinc-800 relative overflow-hidden select-none rounded-none">
       <ResponsiveContainer width="100%" height="100%">
-        <LineChart data={data} margin={{ top: 0, right: 0, left: 0, bottom: 0 }}>
+        <LineChart data={chartData} margin={{ top: 0, right: 0, left: 0, bottom: 0 }}>
           {/* Subtle vertical grid lines */}
           <CartesianGrid strokeDasharray="0" stroke="#111111" vertical={true} horizontal={false} />
           
@@ -45,6 +63,16 @@ const StrategyChart: React.FC<StrategyChartProps> = ({ hands }) => {
             hide={true}
             domain={[-20, 20]} 
           />
+          {/* Moving Average Line - Gold, thin */}
+          <Line 
+            type="linear" 
+            dataKey="ma5" 
+            stroke="#FFD700" 
+            strokeWidth={1} 
+            dot={false}
+            isAnimationActive={false}
+          />
+          {/* Main Performance Line */}
           <Line 
             type="linear" 
             dataKey="runningTotal" 

@@ -19,6 +19,7 @@ let state = {
     isKeypadOpen: false,
     isHistoryExpanded: false,
     selectedWinner: null,
+    isFourCards: null,
     chart: null
 };
 
@@ -37,6 +38,7 @@ const elements = {
     btnBanker: document.getElementById('btn-banker'),
     btnYes: document.getElementById('btn-yes'),
     btnNo: document.getElementById('btn-no'),
+    btnConfirm: document.getElementById('btn-confirm'),
     btnUndo: document.getElementById('btn-undo'),
     btnResetTrigger: document.getElementById('btn-reset-trigger'),
     resetModal: document.getElementById('reset-modal'),
@@ -57,17 +59,28 @@ function initChart() {
         type: 'line',
         data: {
             labels: Array.from({ length: 76 }, (_, i) => i),
-            datasets: [{
-                label: 'Performance',
-                data: [{ x: 0, y: 0 }],
-                borderColor: '#5DD3B6',
-                borderWidth: 2,
-                pointRadius: 0,
-                pointHoverRadius: 4,
-                pointBackgroundColor: '#5DD3B6',
-                tension: 0,
-                fill: false
-            }]
+            datasets: [
+                {
+                    label: 'Moving Average (5)',
+                    data: [{ x: 0, y: 0 }],
+                    borderColor: '#FFD700',
+                    borderWidth: 1,
+                    pointRadius: 0,
+                    tension: 0,
+                    fill: false
+                },
+                {
+                    label: 'Performance',
+                    data: [{ x: 0, y: 0 }],
+                    borderColor: '#5DD3B6',
+                    borderWidth: 2,
+                    pointRadius: 0,
+                    pointHoverRadius: 4,
+                    pointBackgroundColor: '#5DD3B6',
+                    tension: 0,
+                    fill: false
+                }
+            ]
         },
         options: {
             responsive: true,
@@ -121,11 +134,16 @@ function initChart() {
 
 // --- Logic ---
 function calculatePrediction(lastWinner, isFourCards) {
-    if (isFourCards) return lastWinner;
-    return lastWinner === Winner.PLAYER ? Winner.BANKER : Winner.PLAYER;
+    if (isFourCards) return Winner.BANKER;
+    return Winner.PLAYER;
 }
 
-function handleHandSubmit(winner, isFourCards) {
+function handleHandSubmit() {
+    const winner = state.selectedWinner;
+    const isFourCards = state.isFourCards;
+
+    if (!winner || isFourCards === null) return;
+
     let unitsChanged = 0;
     let result = Result.PENDING;
 
@@ -156,8 +174,8 @@ function handleHandSubmit(winner, isFourCards) {
 
     state.hands.push(newHand);
     state.nextPrediction = strategyPrediction;
-    state.isKeypadOpen = false;
     state.selectedWinner = null;
+    state.isFourCards = null;
     
     render();
 }
@@ -188,6 +206,7 @@ function handleReset() {
 function openKeypad() {
     state.isKeypadOpen = true;
     state.selectedWinner = null;
+    state.isFourCards = null;
     render();
 }
 
@@ -198,6 +217,11 @@ function closeKeypad() {
 
 function selectWinner(winner) {
     state.selectedWinner = winner;
+    render();
+}
+
+function selectIsFourCards(value) {
+    state.isFourCards = value;
     render();
 }
 
@@ -231,14 +255,15 @@ function render() {
     elements.btnPlayer.className = getButtonClass(state.selectedWinner === Winner.PLAYER, 'blue');
     elements.btnBanker.className = getButtonClass(state.selectedWinner === Winner.BANKER, 'red');
 
-    const isWinnerSelected = !!state.selectedWinner;
-    elements.btnYes.disabled = !isWinnerSelected;
-    elements.btnNo.disabled = !isWinnerSelected;
-    elements.btnYes.className = `h-16 flex items-center justify-center transition-all rounded-none uppercase text-xs font-black tracking-widest ${isWinnerSelected ? 'bg-emerald-600 hover:bg-emerald-500 text-white' : 'bg-zinc-800 text-zinc-600 cursor-not-allowed border border-zinc-700'}`;
-    elements.btnNo.className = `h-16 flex items-center justify-center transition-all rounded-none uppercase text-xs font-black tracking-widest ${isWinnerSelected ? 'bg-zinc-700 hover:bg-zinc-600 text-white' : 'bg-zinc-800 text-zinc-600 cursor-not-allowed border border-zinc-700'}`;
+    elements.btnYes.className = getButtonClass(state.isFourCards === true, 'emerald');
+    elements.btnNo.className = getButtonClass(state.isFourCards === false, 'zinc');
+
+    const isReady = state.selectedWinner && state.isFourCards !== null;
+    elements.btnConfirm.disabled = !isReady;
+    elements.btnConfirm.className = `h-16 w-full flex items-center justify-center transition-all rounded-none uppercase mt-2 ${isReady ? 'bg-amber-600 hover:bg-amber-500 text-white' : 'bg-zinc-800 text-zinc-600 cursor-not-allowed border border-zinc-700'} text-sm font-black tracking-widest`;
 
     elements.btnUndo.disabled = state.hands.length === 0;
-    elements.btnUndo.className = `w-full h-12 flex items-center justify-center space-x-2 text-[10px] font-bold transition-colors rounded-none uppercase tracking-widest mt-16 ${state.hands.length > 0 ? 'bg-zinc-800 text-zinc-400 hover:text-white hover:bg-zinc-700' : 'text-zinc-700 cursor-not-allowed border border-zinc-800'}`;
+    elements.btnUndo.className = `w-full h-12 flex items-center justify-center space-x-2 text-[10px] font-bold transition-colors rounded-none uppercase tracking-widest mt-8 ${state.hands.length > 0 ? 'bg-zinc-800 text-zinc-400 hover:text-white hover:bg-zinc-700 border border-zinc-700' : 'text-zinc-700 cursor-not-allowed border border-zinc-800'}`;
 
     updatePredictionIndicator();
 
@@ -252,7 +277,10 @@ function render() {
 function getButtonClass(isSelected, color) {
     const base = "h-16 flex items-center justify-center border-2 transition-all rounded-none uppercase text-sm font-black tracking-widest ";
     if (isSelected) {
-        return base + (color === 'blue' ? 'bg-blue-600 border-blue-400 text-white' : 'bg-red-600 border-red-400 text-white');
+        if (color === 'blue') return base + 'bg-blue-600 border-blue-400 text-white';
+        if (color === 'red') return base + 'bg-red-600 border-red-400 text-white';
+        if (color === 'emerald') return base + 'bg-emerald-600 border-emerald-400 text-white';
+        if (color === 'zinc') return base + 'bg-zinc-700 border-zinc-500 text-white';
     }
     return base + "bg-zinc-950 border-zinc-800 text-zinc-500 hover:border-zinc-700 hover:bg-zinc-800";
 }
@@ -315,11 +343,26 @@ function renderHistoryList() {
 
 function updateChart() {
     if (!state.chart) return;
-    const chartData = state.hands.length > 0 
+    
+    const performanceData = state.hands.length > 0 
         ? [{ x: 0, y: 0 }, ...state.hands.map((h, idx) => ({ x: idx + 1, y: h.runningTotal }))]
         : [{ x: 0, y: 0 }];
+
+    const maData = state.hands.length > 0
+        ? [{ x: 0, y: null }, ...state.hands.map((h, idx) => {
+            const period = 5;
+            if (idx < period - 1) return { x: idx + 1, y: null };
+            
+            const start = idx - period + 1;
+            const subset = state.hands.slice(start, idx + 1);
+            const sum = subset.reduce((acc, curr) => acc + curr.runningTotal, 0);
+            const ma = sum / period;
+            return { x: idx + 1, y: ma };
+        })]
+        : [{ x: 0, y: null }];
     
-    state.chart.data.datasets[0].data = chartData;
+    state.chart.data.datasets[0].data = maData;
+    state.chart.data.datasets[1].data = performanceData;
     state.chart.update('none');
 }
 
@@ -332,8 +375,10 @@ function attachEventListeners() {
     elements.btnPlayer.addEventListener('click', () => selectWinner(Winner.PLAYER));
     elements.btnBanker.addEventListener('click', () => selectWinner(Winner.BANKER));
     
-    elements.btnYes.addEventListener('click', () => handleHandSubmit(state.selectedWinner, true));
-    elements.btnNo.addEventListener('click', () => handleHandSubmit(state.selectedWinner, false));
+    elements.btnYes.addEventListener('click', () => selectIsFourCards(true));
+    elements.btnNo.addEventListener('click', () => selectIsFourCards(false));
+    
+    elements.btnConfirm.addEventListener('click', handleHandSubmit);
     
     elements.btnUndo.addEventListener('click', handleUndo);
     

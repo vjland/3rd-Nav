@@ -12,13 +12,21 @@ interface KeypadProps {
 
 const Keypad: React.FC<KeypadProps> = ({ isOpen, onClose, onSubmit, onUndo, canUndo }) => {
   const [selectedWinner, setSelectedWinner] = useState<Winner | null>(null);
+  const [isFourCards, setIsFourCards] = useState<boolean | null>(null);
 
   useEffect(() => {
-    if (isOpen) setSelectedWinner(null);
+    if (isOpen) {
+      setSelectedWinner(null);
+      setIsFourCards(null);
+    }
   }, [isOpen]);
 
-  const handleSubmit = (isFourCards: boolean) => {
-    if (selectedWinner) onSubmit(selectedWinner, isFourCards);
+  const handleSubmit = () => {
+    if (selectedWinner && isFourCards !== null) {
+      onSubmit(selectedWinner, isFourCards);
+      setSelectedWinner(null);
+      setIsFourCards(null);
+    }
   };
 
   return (
@@ -70,35 +78,46 @@ const Keypad: React.FC<KeypadProps> = ({ isOpen, onClose, onSubmit, onUndo, canU
           {/* YES/NO Buttons - Wide Action Buttons */}
           <div className="grid grid-cols-2 gap-2">
             <button
-              onClick={() => handleSubmit(true)}
-              disabled={!selectedWinner}
-              className={`h-16 w-full flex items-center justify-center transition-all rounded-none uppercase ${
-                selectedWinner
-                  ? 'bg-emerald-600 hover:bg-emerald-500 text-white'
-                  : 'bg-zinc-800 text-zinc-600 cursor-not-allowed border border-zinc-700'
+              onClick={() => setIsFourCards(true)}
+              className={`h-16 w-full flex items-center justify-center border-2 transition-all rounded-none uppercase ${
+                isFourCards === true
+                  ? 'bg-emerald-600 border-emerald-400 text-white'
+                  : 'bg-zinc-950 border-zinc-800 text-zinc-500 hover:border-zinc-700 hover:bg-zinc-800'
               }`}
             >
               <span className="text-xs font-black tracking-[0.2em]">YES</span>
             </button>
 
             <button
-              onClick={() => handleSubmit(false)}
-              disabled={!selectedWinner}
-              className={`h-16 w-full flex items-center justify-center transition-all rounded-none uppercase ${
-                selectedWinner
-                  ? 'bg-zinc-700 hover:bg-zinc-600 text-white'
-                  : 'bg-zinc-800 text-zinc-600 cursor-not-allowed border border-zinc-700'
+              onClick={() => setIsFourCards(false)}
+              className={`h-16 w-full flex items-center justify-center border-2 transition-all rounded-none uppercase ${
+                isFourCards === false
+                  ? 'bg-zinc-700 border-zinc-500 text-white'
+                  : 'bg-zinc-950 border-zinc-800 text-zinc-500 hover:border-zinc-700 hover:bg-zinc-800'
               }`}
             >
               <span className="text-xs font-black tracking-[0.2em]">NO</span>
             </button>
           </div>
 
-          {/* Undo Button - Distanced by mt-16 */}
+          {/* Confirm Button */}
+          <button
+            onClick={handleSubmit}
+            disabled={!selectedWinner || isFourCards === null}
+            className={`h-16 w-full flex items-center justify-center transition-all rounded-none uppercase mt-2 ${
+              selectedWinner && isFourCards !== null
+                ? 'bg-amber-600 hover:bg-amber-500 text-white'
+                : 'bg-zinc-800 text-zinc-600 cursor-not-allowed border border-zinc-700'
+            }`}
+          >
+            <span className="text-sm font-black tracking-widest">CONFIRM</span>
+          </button>
+
+          {/* Undo Button */}
           <button 
              onClick={onUndo}
              disabled={!canUndo}
-             className={`w-full h-12 flex items-center justify-center space-x-2 text-[10px] font-bold transition-colors rounded-none uppercase tracking-widest mt-16 ${
+             className={`w-full h-12 flex items-center justify-center space-x-2 text-[10px] font-bold transition-colors rounded-none uppercase tracking-widest mt-8 ${
                canUndo 
                  ? 'bg-zinc-800 text-zinc-400 hover:text-white hover:bg-zinc-700 border border-zinc-700' 
                  : 'text-zinc-700 cursor-not-allowed border border-zinc-800'

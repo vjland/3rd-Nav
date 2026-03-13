@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Natural Win Nav</title>
+    <title>NW-B Navigator</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
@@ -32,11 +32,11 @@
     <!-- Header -->
     <header class="flex-none h-16 bg-zinc-900 border-b border-zinc-800 flex items-center justify-between px-4 z-30 relative">
         <div class="flex items-center space-x-3">
-            <h1 class="text-sm font-bold tracking-widest text-zinc-500 uppercase hidden sm:block">Natural Win Nav</h1>
+            <h1 class="text-sm font-bold tracking-widest text-zinc-500 uppercase hidden sm:block">NW-B Navigator</h1>
         </div>
 
         <div class="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 flex items-center space-x-3">
-            <span class="text-zinc-500 text-[10px] font-bold uppercase tracking-tighter hidden sm:block">Next Suggestion</span>
+            <span class="text-zinc-500 text-[10px] font-bold uppercase tracking-tighter">nw-B next</span>
             <div id="next-bet-indicator" class="flex items-center justify-center w-12 h-12 border-2 transition-all duration-300 rounded-none bg-zinc-800/50 border-zinc-700 text-zinc-700">
                 <span class="text-2xl font-black">-</span>
             </div>
@@ -97,12 +97,15 @@
 
             <!-- YES/NO Buttons -->
             <div class="grid grid-cols-2 gap-2">
-                <button id="btn-yes" disabled class="h-16 flex items-center justify-center transition-all rounded-none uppercase bg-zinc-800 text-zinc-600 cursor-not-allowed border border-zinc-700 text-xs font-black tracking-widest">YES</button>
-                <button id="btn-no" disabled class="h-16 flex items-center justify-center transition-all rounded-none uppercase bg-zinc-800 text-zinc-600 cursor-not-allowed border border-zinc-700 text-xs font-black tracking-widest">NO</button>
+                <button id="btn-yes" class="h-16 flex items-center justify-center transition-all rounded-none uppercase bg-zinc-950 border-2 border-zinc-800 text-zinc-500 hover:border-zinc-700 hover:bg-zinc-800 text-xs font-black tracking-widest">YES</button>
+                <button id="btn-no" class="h-16 flex items-center justify-center transition-all rounded-none uppercase bg-zinc-950 border-2 border-zinc-800 text-zinc-500 hover:border-zinc-700 hover:bg-zinc-800 text-xs font-black tracking-widest">NO</button>
             </div>
 
-            <!-- Undo Button - Distanced by mt-16 -->
-            <button id="btn-undo" disabled class="w-full h-12 flex items-center justify-center space-x-2 text-[10px] font-bold transition-colors rounded-none uppercase tracking-widest mt-16 text-zinc-700 cursor-not-allowed border border-zinc-800">
+            <!-- Confirm Button -->
+            <button id="btn-confirm" disabled class="h-16 w-full flex items-center justify-center transition-all rounded-none uppercase bg-zinc-800 text-zinc-600 cursor-not-allowed border border-zinc-700 text-sm font-black tracking-widest mt-2">CONFIRM</button>
+
+            <!-- Undo Button - Distanced by mt-8 -->
+            <button id="btn-undo" disabled class="w-full h-12 flex items-center justify-center space-x-2 text-[10px] font-bold transition-colors rounded-none uppercase tracking-widest mt-8 text-zinc-700 cursor-not-allowed border border-zinc-800">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
                 <span>Undo Action</span>
             </button>

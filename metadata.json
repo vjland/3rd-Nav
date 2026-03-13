@@ -1,5 +1,5 @@
 {
-  "name": "Natural Win Nav",
-  "description": "A professional Baccarat tracking and strategy application featuring real-time performance visualization, hand history, and automated betting predictions based on if 3rd card is dealt to either banker or player.",
+  "name": "NW-B Navigator",
+  "description": "if the previous outcome is a natural win, bet Banker for up coming hand, otherwise bet player",
   "requestFramePermissions": []
 }
