@@ -32,11 +32,6 @@
     <!-- Header -->
     <header class="flex-none h-16 bg-zinc-900 border-b border-zinc-800 flex items-center justify-between px-4 z-30 relative">
         <div class="flex items-center space-x-3">
-            <h1 class="text-sm font-bold tracking-widest text-zinc-500 uppercase hidden sm:block">NW-B Navigator</h1>
-        </div>
-
-        <div class="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 flex items-center space-x-3">
-            <span class="text-zinc-500 text-[10px] font-bold uppercase tracking-tighter">nw-B next</span>
             <div id="next-bet-indicator" class="flex items-center justify-center w-12 h-12 border-2 transition-all duration-300 rounded-none bg-zinc-800/50 border-zinc-700 text-zinc-700">
                 <span class="text-2xl font-black">-</span>
             </div>
@@ -65,6 +60,7 @@
                     <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="m12 7 0 5 3 3"/></svg>
                     <span class="text-[10px] font-black uppercase tracking-[0.2em]">Audit Log</span>
                     <span id="log-count" class="text-[9px] text-zinc-700 font-mono">[0]</span>
+                    <span class="text-xs font-black tracking-widest text-amber-500 uppercase ml-4">NW-B Navigator</span>
                 </div>
                 <div id="history-toggle-icon" class="text-zinc-700 group-hover:text-zinc-400">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>
@@ -81,7 +77,7 @@
 
     <!-- Keypad Side Panel - Moved to top-0 and Widened to w-64 -->
     <div id="keypad-backdrop" class="fixed inset-0 z-40 bg-black/30 transition-opacity duration-300 opacity-0 pointer-events-none"></div>
-    <div id="keypad-panel" class="fixed top-0 right-0 z-50 w-64 h-fit bg-zinc-900 border-l border-b border-zinc-800 flex flex-col transition-transform translate-x-full rounded-none shadow-2xl">
+    <div id="keypad-panel" class="fixed top-0 right-0 z-50 w-40 h-fit bg-zinc-900 border-l border-b border-zinc-800 flex flex-col transition-transform translate-x-full rounded-none shadow-2xl">
         <div class="flex justify-end items-center px-3 py-2 border-b border-zinc-800 bg-zinc-950">
             <button id="btn-close-keypad" class="p-1 hover:bg-zinc-800 transition-colors text-zinc-500 hover:text-white">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
@@ -91,18 +87,26 @@
         <div class="p-4 flex flex-col space-y-3">
             <!-- Winner Buttons -->
             <div class="grid grid-cols-2 gap-2">
-                <button id="btn-player" class="h-16 flex items-center justify-center border-2 bg-zinc-950 border-zinc-800 text-zinc-500 hover:border-zinc-700 hover:bg-zinc-800 transition-all rounded-none uppercase text-sm font-black tracking-widest">PLAYER</button>
-                <button id="btn-banker" class="h-16 flex items-center justify-center border-2 bg-zinc-950 border-zinc-800 text-zinc-500 hover:border-zinc-700 hover:bg-zinc-800 transition-all rounded-none uppercase text-sm font-black tracking-widest">BANKER</button>
+                <button id="btn-player" class="aspect-square w-full flex items-center justify-center border-2 bg-zinc-950 border-zinc-800 text-zinc-500 hover:border-zinc-700 hover:bg-zinc-800 transition-all rounded-none uppercase text-2xl font-black tracking-widest">P</button>
+                <button id="btn-banker" class="aspect-square w-full flex items-center justify-center border-2 bg-zinc-950 border-zinc-800 text-zinc-500 hover:border-zinc-700 hover:bg-zinc-800 transition-all rounded-none uppercase text-2xl font-black tracking-widest">B</button>
             </div>
 
             <!-- YES/NO Buttons -->
             <div class="grid grid-cols-2 gap-2">
-                <button id="btn-yes" class="h-16 flex items-center justify-center transition-all rounded-none uppercase bg-zinc-950 border-2 border-zinc-800 text-zinc-500 hover:border-zinc-700 hover:bg-zinc-800 text-xs font-black tracking-widest">YES</button>
-                <button id="btn-no" class="h-16 flex items-center justify-center transition-all rounded-none uppercase bg-zinc-950 border-2 border-zinc-800 text-zinc-500 hover:border-zinc-700 hover:bg-zinc-800 text-xs font-black tracking-widest">NO</button>
+                <button id="btn-yes" class="aspect-square w-full flex items-center justify-center transition-all rounded-none uppercase bg-zinc-950 border-2 border-zinc-800 text-zinc-500 hover:border-zinc-700 hover:bg-zinc-800 text-xs font-black tracking-widest">YES</button>
+                <button id="btn-no" class="aspect-square w-full flex items-center justify-center transition-all rounded-none uppercase bg-zinc-950 border-2 border-zinc-800 text-zinc-500 hover:border-zinc-700 hover:bg-zinc-800 text-xs font-black tracking-widest">NO</button>
+            </div>
+
+            <!-- Auto-hide toggle -->
+            <div class="flex items-center px-1 mt-2">
+                <label class="text-xs text-zinc-400 flex items-center space-x-2 cursor-pointer">
+                    <input type="checkbox" id="toggle-autohide" class="rounded border-zinc-700 bg-zinc-900 text-amber-500">
+                    <span>Auto-hide panel</span>
+                </label>
             </div>
 
             <!-- Confirm Button -->
-            <button id="btn-confirm" disabled class="h-16 w-full flex items-center justify-center transition-all rounded-none uppercase bg-zinc-800 text-zinc-600 cursor-not-allowed border border-zinc-700 text-sm font-black tracking-widest mt-2">CONFIRM</button>
+            <button id="btn-confirm" disabled class="h-12 w-full flex items-center justify-center transition-all rounded-none uppercase bg-zinc-800 text-zinc-600 cursor-not-allowed border border-zinc-700 text-sm font-black tracking-widest mt-2">CONFIRM</button>
 
             <!-- Undo Button - Distanced by mt-8 -->
             <button id="btn-undo" disabled class="w-full h-12 flex items-center justify-center space-x-2 text-[10px] font-bold transition-colors rounded-none uppercase tracking-widest mt-8 text-zinc-700 cursor-not-allowed border border-zinc-800">

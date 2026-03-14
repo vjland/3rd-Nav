@@ -20,6 +20,7 @@ let state = {
     isHistoryExpanded: false,
     selectedWinner: null,
     isFourCards: null,
+    autoHide: false,
     chart: null
 };
 
@@ -38,6 +39,7 @@ const elements = {
     btnBanker: document.getElementById('btn-banker'),
     btnYes: document.getElementById('btn-yes'),
     btnNo: document.getElementById('btn-no'),
+    toggleAutoHide: document.getElementById('toggle-autohide'),
     btnConfirm: document.getElementById('btn-confirm'),
     btnUndo: document.getElementById('btn-undo'),
     btnResetTrigger: document.getElementById('btn-reset-trigger'),
@@ -74,9 +76,11 @@ function initChart() {
                     data: [{ x: 0, y: 0 }],
                     borderColor: '#5DD3B6',
                     borderWidth: 2,
-                    pointRadius: 0,
+                    pointRadius: 1.5,
+                    pointBackgroundColor: '#ffffff',
+                    pointBorderColor: '#ffffff',
                     pointHoverRadius: 4,
-                    pointBackgroundColor: '#5DD3B6',
+                    pointHoverBackgroundColor: '#5DD3B6',
                     tension: 0,
                     fill: false
                 }
@@ -177,6 +181,10 @@ function handleHandSubmit() {
     state.selectedWinner = null;
     state.isFourCards = null;
     
+    if (state.autoHide) {
+        state.isKeypadOpen = false;
+    }
+    
     render();
 }
 
@@ -252,15 +260,15 @@ function render() {
         elements.keypadBackdrop.classList.remove('opacity-100');
     }
 
-    elements.btnPlayer.className = getButtonClass(state.selectedWinner === Winner.PLAYER, 'blue');
-    elements.btnBanker.className = getButtonClass(state.selectedWinner === Winner.BANKER, 'red');
+    elements.btnPlayer.className = getButtonClass(state.selectedWinner === Winner.PLAYER, 'blue', true);
+    elements.btnBanker.className = getButtonClass(state.selectedWinner === Winner.BANKER, 'red', true);
 
-    elements.btnYes.className = getButtonClass(state.isFourCards === true, 'emerald');
-    elements.btnNo.className = getButtonClass(state.isFourCards === false, 'zinc');
+    elements.btnYes.className = getButtonClass(state.isFourCards === true, 'emerald', false);
+    elements.btnNo.className = getButtonClass(state.isFourCards === false, 'zinc', false);
 
     const isReady = state.selectedWinner && state.isFourCards !== null;
     elements.btnConfirm.disabled = !isReady;
-    elements.btnConfirm.className = `h-16 w-full flex items-center justify-center transition-all rounded-none uppercase mt-2 ${isReady ? 'bg-amber-600 hover:bg-amber-500 text-white' : 'bg-zinc-800 text-zinc-600 cursor-not-allowed border border-zinc-700'} text-sm font-black tracking-widest`;
+    elements.btnConfirm.className = `h-12 w-full flex items-center justify-center transition-all rounded-none uppercase mt-2 ${isReady ? 'bg-amber-600 hover:bg-amber-500 text-white' : 'bg-zinc-800 text-zinc-600 cursor-not-allowed border border-zinc-700'} text-sm font-black tracking-widest`;
 
     elements.btnUndo.disabled = state.hands.length === 0;
     elements.btnUndo.className = `w-full h-12 flex items-center justify-center space-x-2 text-[10px] font-bold transition-colors rounded-none uppercase tracking-widest mt-8 ${state.hands.length > 0 ? 'bg-zinc-800 text-zinc-400 hover:text-white hover:bg-zinc-700 border border-zinc-700' : 'text-zinc-700 cursor-not-allowed border border-zinc-800'}`;
@@ -274,8 +282,9 @@ function render() {
     updateChart();
 }
 
-function getButtonClass(isSelected, color) {
-    const base = "h-16 flex items-center justify-center border-2 transition-all rounded-none uppercase text-sm font-black tracking-widest ";
+function getButtonClass(isSelected, color, isLargeText = false) {
+    const textClass = isLargeText ? "text-2xl" : "text-xs";
+    const base = `aspect-square w-full flex items-center justify-center border-2 transition-all rounded-none uppercase ${textClass} font-black tracking-widest `;
     if (isSelected) {
         if (color === 'blue') return base + 'bg-blue-600 border-blue-400 text-white';
         if (color === 'red') return base + 'bg-red-600 border-red-400 text-white';
@@ -377,6 +386,10 @@ function attachEventListeners() {
     
     elements.btnYes.addEventListener('click', () => selectIsFourCards(true));
     elements.btnNo.addEventListener('click', () => selectIsFourCards(false));
+    
+    elements.toggleAutoHide.addEventListener('change', (e) => {
+        state.autoHide = e.target.checked;
+    });
     
     elements.btnConfirm.addEventListener('click', handleHandSubmit);
     

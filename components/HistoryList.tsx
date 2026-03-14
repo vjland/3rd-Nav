@@ -25,6 +25,7 @@ const HistoryList: React.FC<HistoryListProps> = ({ hands, isExpanded, onToggle }
           <History className="w-3 h-3" />
           <span className="text-[10px] font-black uppercase tracking-[0.2em]">Audit Log</span>
           <span className="text-[9px] text-zinc-700 font-mono">[{hands.length}]</span>
+          <span className="text-xs font-black tracking-widest text-amber-500 uppercase ml-4">NW-B Navigator</span>
         </div>
         <button className="text-zinc-700 group-hover:text-zinc-400">
           {isExpanded ? <ChevronDown className="w-4 h-4" /> : <ChevronUp className="w-4 h-4" />}

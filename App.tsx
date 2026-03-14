@@ -95,11 +95,6 @@ const App: React.FC = () => {
     <div className="flex flex-col h-screen overflow-hidden bg-zinc-950 text-zinc-100 font-sans">
       <header className="flex-none h-16 bg-zinc-900 border-b border-zinc-800 flex items-center justify-between px-4 z-30 relative">
         <div className="flex items-center space-x-3">
-          <h1 className="text-sm font-bold tracking-widest text-zinc-500 uppercase hidden sm:block">NW-B Navigator</h1>
-        </div>
-
-        <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 flex items-center space-x-3">
-          <span className="text-zinc-500 text-[10px] font-bold uppercase tracking-tighter">nw-B next</span>
           {getNextBetIndicator()}
         </div>
 

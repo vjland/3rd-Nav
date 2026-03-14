@@ -78,7 +78,7 @@ const StrategyChart: React.FC<StrategyChartProps> = ({ hands }) => {
             dataKey="runningTotal" 
             stroke="#5DD3B6" 
             strokeWidth={2} 
-            dot={false}
+            dot={{ r: 1.5, fill: '#ffffff', strokeWidth: 0 }}
             activeDot={{ r: 4, fill: '#5DD3B6', stroke: '#09090b', strokeWidth: 2 }}
             isAnimationActive={false}
           />

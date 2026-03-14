@@ -13,6 +13,7 @@ interface KeypadProps {
 const Keypad: React.FC<KeypadProps> = ({ isOpen, onClose, onSubmit, onUndo, canUndo }) => {
   const [selectedWinner, setSelectedWinner] = useState<Winner | null>(null);
   const [isFourCards, setIsFourCards] = useState<boolean | null>(null);
+  const [autoHide, setAutoHide] = useState<boolean>(false);
 
   useEffect(() => {
     if (isOpen) {
@@ -26,6 +27,9 @@ const Keypad: React.FC<KeypadProps> = ({ isOpen, onClose, onSubmit, onUndo, canU
       onSubmit(selectedWinner, isFourCards);
       setSelectedWinner(null);
       setIsFourCards(null);
+      if (autoHide) {
+        onClose();
+      }
     }
   };
 
@@ -37,9 +41,9 @@ const Keypad: React.FC<KeypadProps> = ({ isOpen, onClose, onSubmit, onUndo, canU
         onClick={onClose} 
       />
       
-      {/* Side Panel - Moved to absolute top-right (top-0) and widened to w-64 */}
+      {/* Side Panel - Moved to absolute top-right (top-0) and narrowed to w-40 */}
       <div 
-        className={`fixed top-0 right-0 z-50 h-fit w-64 bg-zinc-900 border-l border-b border-zinc-800 flex flex-col transition-transform duration-300 transform rounded-none shadow-2xl ${
+        className={`fixed top-0 right-0 z-50 h-fit w-40 bg-zinc-900 border-l border-b border-zinc-800 flex flex-col transition-transform duration-300 transform rounded-none shadow-2xl ${
           isOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
@@ -55,23 +59,23 @@ const Keypad: React.FC<KeypadProps> = ({ isOpen, onClose, onSubmit, onUndo, canU
           <div className="grid grid-cols-2 gap-2">
             <button
               onClick={() => setSelectedWinner(Winner.PLAYER)}
-              className={`h-16 w-full flex items-center justify-center border-2 transition-all rounded-none ${
+              className={`aspect-square w-full flex items-center justify-center border-2 transition-all rounded-none ${
                 selectedWinner === Winner.PLAYER
                   ? 'bg-blue-600 border-blue-400 text-white'
                   : 'bg-zinc-950 border-zinc-800 text-zinc-500 hover:border-zinc-700 hover:bg-zinc-800'
               }`}
             >
-              <span className="text-sm font-black tracking-widest">PLAYER</span>
+              <span className="text-2xl font-black tracking-widest">P</span>
             </button>
             <button
               onClick={() => setSelectedWinner(Winner.BANKER)}
-              className={`h-16 w-full flex items-center justify-center border-2 transition-all rounded-none ${
+              className={`aspect-square w-full flex items-center justify-center border-2 transition-all rounded-none ${
                 selectedWinner === Winner.BANKER
                   ? 'bg-red-600 border-red-400 text-white'
                   : 'bg-zinc-950 border-zinc-800 text-zinc-500 hover:border-zinc-700 hover:bg-zinc-800'
               }`}
             >
-              <span className="text-sm font-black tracking-widest">BANKER</span>
+              <span className="text-2xl font-black tracking-widest">B</span>
             </button>
           </div>
 
@@ -79,7 +83,7 @@ const Keypad: React.FC<KeypadProps> = ({ isOpen, onClose, onSubmit, onUndo, canU
           <div className="grid grid-cols-2 gap-2">
             <button
               onClick={() => setIsFourCards(true)}
-              className={`h-16 w-full flex items-center justify-center border-2 transition-all rounded-none uppercase ${
+              className={`aspect-square w-full flex items-center justify-center border-2 transition-all rounded-none uppercase ${
                 isFourCards === true
                   ? 'bg-emerald-600 border-emerald-400 text-white'
                   : 'bg-zinc-950 border-zinc-800 text-zinc-500 hover:border-zinc-700 hover:bg-zinc-800'
@@ -90,7 +94,7 @@ const Keypad: React.FC<KeypadProps> = ({ isOpen, onClose, onSubmit, onUndo, canU
 
             <button
               onClick={() => setIsFourCards(false)}
-              className={`h-16 w-full flex items-center justify-center border-2 transition-all rounded-none uppercase ${
+              className={`aspect-square w-full flex items-center justify-center border-2 transition-all rounded-none uppercase ${
                 isFourCards === false
                   ? 'bg-zinc-700 border-zinc-500 text-white'
                   : 'bg-zinc-950 border-zinc-800 text-zinc-500 hover:border-zinc-700 hover:bg-zinc-800'
@@ -100,11 +104,24 @@ const Keypad: React.FC<KeypadProps> = ({ isOpen, onClose, onSubmit, onUndo, canU
             </button>
           </div>
 
+          {/* Auto-hide toggle */}
+          <div className="flex items-center px-1 mt-2">
+            <label className="text-xs text-zinc-400 flex items-center space-x-2 cursor-pointer">
+              <input 
+                type="checkbox" 
+                checked={autoHide} 
+                onChange={(e) => setAutoHide(e.target.checked)}
+                className="rounded border-zinc-700 bg-zinc-900 text-amber-500"
+              />
+              <span>Auto-hide panel</span>
+            </label>
+          </div>
+
           {/* Confirm Button */}
           <button
             onClick={handleSubmit}
             disabled={!selectedWinner || isFourCards === null}
-            className={`h-16 w-full flex items-center justify-center transition-all rounded-none uppercase mt-2 ${
+            className={`h-12 w-full flex items-center justify-center transition-all rounded-none uppercase mt-2 ${
               selectedWinner && isFourCards !== null
                 ? 'bg-amber-600 hover:bg-amber-500 text-white'
                 : 'bg-zinc-800 text-zinc-600 cursor-not-allowed border border-zinc-700'
