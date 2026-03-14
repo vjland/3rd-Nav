@@ -92,7 +92,7 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col h-screen overflow-hidden bg-zinc-950 text-zinc-100 font-sans">
+    <div className="flex flex-col h-[100dvh] overflow-hidden bg-zinc-950 text-zinc-100 font-sans">
       <header className="flex-none h-16 bg-zinc-900 border-b border-zinc-800 flex items-center justify-between px-4 z-30 relative">
         <div className="flex items-center space-x-3">
           {getNextBetIndicator()}
